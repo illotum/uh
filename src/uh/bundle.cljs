@@ -1,17 +1,8 @@
 ;; vim:fdm=syntax:foldlevel=0
 (ns uh.bundle
-  (:require [uh.index :as index]
-            [reagent.core :as r]))
+  (:require [uh.index :as index]))
 
 ;; Helpers
-(defn deep-merge-with [f & vsx]
-  "Deeply merges like `deep-merge`, but uses `f` to produce a value from the
-  conflicting values for a key in multiple maps."
-  (let [vs (filter some? vsx)]
-    (if (every? map? vs)
-      (apply merge-with (partial deep-merge-with f) vs)
-      (apply f vs))))
-
 (defn v->kw [e]
   (keyword (.-target.value e)))
 

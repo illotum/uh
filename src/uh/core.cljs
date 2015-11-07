@@ -1,6 +1,7 @@
 (ns ^:figwheel-always uh.core
     (:require
               [uh.bundle :as bundle]
+              [uh.merger :as merger]
               [uh.index :as index]
               [reagent.core :as r]))
 
@@ -10,6 +11,7 @@
 (defonce homeworlds-state (r/atom {}))
 (defonce backgrounds-state (r/atom {}))
 (defonce roles-state (r/atom {}))
+(defonce user-state (r/atom {}))
 ;; }}}
 
 ;; {{{ Views
@@ -17,17 +19,18 @@
 (def backgrounds-view (bundle/view :backgrounds index/core backgrounds-state))
 (def roles-view (bundle/view :roles index/core roles-state))
 
+
 (defn app []
   [:div.container
-    [:div.row
-     (homeworlds-view)
-     (backgrounds-view)
-     (roles-view) ]
-    [:div.row
-      [:div.debug [:code (str @homeworlds-state)]]
-      [:div.debug [:code (str @backgrounds-state)]]
-      [:div.debug [:code (str @roles-state)]]
-     ]])
+   [:div.row
+    (homeworlds-view)
+    (backgrounds-view)
+    (roles-view)]
+   [:div.row
+    (merger/simple-view @homeworlds-state
+                        @backgrounds-state
+                        @roles-state)]
+    ])
 ;; }}}
 (r/render-component [app]
                     (. js/document (getElementById "app")))
